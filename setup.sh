@@ -58,15 +58,15 @@ echo "Using mount script: ${MOUNT_SCRIPT}"
 sudo tee /etc/systemd/system/azfiles-mount.service > /dev/null << UNIT_EOF
 [Unit]
 Description=Azure Files Kerberos mount and token refresh
-After=network-online.target
-Wants=network-online.target
+After=multi-user.target
+Wants=multi-user.target
 
 [Service]
 Type=forking
 User=azureuser
 Group=azureuser
 EnvironmentFile=/etc/default/azfiles
-ExecStartPre=/bin/sleep 15
+ExecStartPre=/bin/sleep 75
 ExecStart=${MOUNT_SCRIPT}
 TimeoutStartSec=300
 Restart=on-failure
