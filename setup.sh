@@ -92,7 +92,7 @@ cat /etc/default/azfiles
 
 # Allow azureuser to run privileged commands without password
 sudo tee /etc/sudoers.d/azfiles > /dev/null << 'SUDOERS_EOF'
-azureuser ALL=(ALL) NOPASSWD: /usr/bin/mount, /usr/bin/umount, /usr/bin/azfilesauthmanager, /usr/bin/mkdir, /usr/bin/tee, /usr/bin/touch, /usr/bin/chmod, /usr/bin/rm
+azureuser ALL=(ALL) NOPASSWD: /usr/bin/mount, /usr/bin/umount, /usr/bin/azfilesauthmanager, /usr/bin/mkdir, /usr/bin/tee, /usr/bin/touch, /usr/bin/chmod, /usr/bin/rm, /usr/bin/systemctl restart jupyter.service
 SUDOERS_EOF
 sudo chmod 440 /etc/sudoers.d/azfiles
 
