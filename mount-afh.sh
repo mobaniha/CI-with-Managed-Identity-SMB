@@ -182,5 +182,17 @@ else
     do_mount "${MOUNT_PATH}" "${SHARE_NAME}"
 fi
 
+# ── Restart Jupyter so it drops the stale mount handle ──────────────────────
+# The remount(s) above replace the filesystem under Jupyter's working directory.
+# A long-running Jupyter process keeps a stale CIFS handle and then fails with
+# "OSError: [Errno 107] Transport endpoint is not connected" on kernel start,
+# nbconvert, etc. Restarting it forces a fresh handle on the new mount.
+if systemctl list-unit-files | grep -q '^jupyter\.service'; then
+    echo "Restarting jupyter.service to pick up the fresh mount ..."
+    sudo systemctl restart jupyter.service || echo "WARN: jupyter restart failed."
+else
+    echo "jupyter.service not found — skipping restart."
+fi
+
 # ── Start background token-refresh daemon ───────────────────────────────────
 bash "${INSTALL_DIR}/refresh.sh"
